@@ -1,0 +1,23 @@
+package simpleCalculator;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+import org.junit.jupiter.api.Test;
+
+public class test1 {
+	@Test
+	public void test() throws InterruptedException {
+		calcc calcula = new calcc();
+		double x = calcula.add(6, 4);
+		assertEquals(x, 10);
+		
+//		double y = calcula.subtract(6, 4);
+//		assertEquals(y, 2);
+//		
+//		double z = calcula.multiply(6, 4);
+//		assertEquals(z, 24);
+//		
+//		double w = calcula.divide(12, 4);
+//		assertEquals(w, 3);
+	}
+}

@@ -1,0 +1,35 @@
+// indicates the package under which the class is
+package interfaceScenario;
+
+// Cylinder class that implements the SolidShape interface
+public class Cylinder implements SolidShape{
+	// declares attributes of the Cylinder class
+	// Used private access modifier because it does not give access to other classes. Access can grant right to
+	// change the property, and once one of these properties are changed then the shape won't be the same 
+	// shape anymore i.e different
+	private double radius;
+	private double height;
+	
+	// declares other attribues to the shape
+	// set them as default because access to these attributes can't affect the main properties of the shape
+	// These properties are defined using the radius and height;
+	double volume;
+	double area;
+	
+	// constructor class for the Cylinder class
+	public Cylinder(double r, double h) {
+		this.radius = r;
+		this.height = h;
+	}
+	
+	public void getSurfaceArea() {
+		area = 2 * Math.PI * this.radius * (this.radius + this.height) ;
+		System.out.println("The surface area of the cylinder is: " + area + " unit area");
+	}
+	
+	public void getVolume() {
+		volume = Math.PI * Math.pow(this.radius,2) * this.height ;
+		System.out.println("The volume of the cylinder is: " + volume + " unit volume");
+	}
+	
+}

@@ -1,0 +1,87 @@
+package ALU;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
+public class DegreeProgram {
+	JPanel degreeProgPage;
+	JScrollPane Scrollbar;
+	JTextArea studentList;
+	String programName;
+	
+	public DegreeProgram(String program) {
+		programName = program;
+		degreeProgPage = new JPanel();
+		degreeProgPage.setSize(380,720);
+		degreeProgPage.setLocation(0,0);
+		
+		JTable dataTable= new JTable(); 	
+		dataTable.setLocation(0, 0);
+		dataTable.setSize(380, 720);
+						
+		Scrollbar = new JScrollPane(dataTable, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+        ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED); 
+		degreeProgPage.add(Scrollbar);
+		
+		try {
+			
+			//1. Create database connection
+			Connection myConn = DriverManager.getConnection(
+		            "jdbc:mysql://localhost:3306/alu_registration_database","root", "");
+			
+			//2. Create a statement
+			Statement mySt = myConn.createStatement();
+						
+			String selectQuery = "select * from applicants_table;";
+			
+			ResultSet myResult = mySt.executeQuery(selectQuery); 
+			ResultSetMetaData studentData = myResult.getMetaData();
+			DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
+			int columns = studentData.getColumnCount();
+			String[] columnNames = new String[2];
+			
+			int x = 0;
+			for(int i = 0; i<columns; i++) {
+				if (studentData.getColumnName(i+1).equals("studentRegistrationNumber") | 
+					studentData.getColumnName(i+1).equals("fullName")) {
+					columnNames[x] = studentData.getColumnName(i+1);
+					x++;
+				}
+				else {
+					continue;
+				}
+			}
+			model.setColumnIdentifiers(columnNames);
+			
+			String rollNum, stName;
+			while(myResult.next()) {
+				if (myResult.getString("major").equals(programName)) {
+					rollNum = myResult.getString("studentRegistrationNumber");
+					stName = myResult.getString("fullName");
+					String[] rows = {rollNum, stName};
+					model.addRow(rows);
+				}
+			}
+			
+		}
+		
+		catch(SQLException exception) {
+			if(exception.getErrorCode() == 0 ){
+				System.out.println("Database connection failed. Please check if your database is connected."); 
+			}
+			exception.printStackTrace();
+		}
+		
+		  		
+		degreeProgPage.setVisible(true);
+		
+	}
+	
+}

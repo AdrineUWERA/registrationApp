@@ -1,0 +1,69 @@
+package ALU;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.*;
+
+import javax.swing.*;
+
+public class LoginPage {
+	JPanel loginPanel;
+	JLabel emailLabel;
+	JTextField email;
+	JLabel passwordLabel;
+	JTextField password;
+	JLabel confirmEmailLabel;
+	JTextField confirmPassword;
+	JLabel result;
+	JButton loginBtn;
+	JButton logoutBtn;
+	String studentEmail;
+	String studentPassword;
+	
+	
+	
+	public LoginPage() {
+		loginPanel = new JPanel();
+		
+		emailLabel = new JLabel("Email: ");  
+		emailLabel.setBounds(50, 50, 350, 20); 
+		email = new JTextField();
+		email.setBounds(50, 80, 350, 30); 
+		
+		passwordLabel = new JLabel("Password: ");  
+	    passwordLabel.setBounds(50, 120, 300,30); 
+		password = new JTextField();
+		password.setBounds(50,160, 350, 30);  
+	    		
+		result = new JLabel("");  
+		result.setBounds(50,20, 300,30); 
+	   
+		loginPanel.add(result);
+	    loginPanel.add(email);
+	    loginPanel.add(password);
+	    loginPanel.add(emailLabel);
+	    loginPanel.add(passwordLabel);
+	    
+	    
+		loginBtn =  new JButton("Login");
+		loginBtn.setBounds(50,220,100,30);  
+		loginBtn.setEnabled(true);
+		loginPanel.add(loginBtn); 		
+		loginPanel.setSize(460,320);  
+		loginPanel.setLayout(null);  		
+		loginPanel.setVisible(true); 
+	}
+	
+	public boolean isLoggedIn() {
+		boolean isOkay = false;
+		if (result.getText() == "Logged in successfully") {
+			isOkay = true;
+		} 
+		return isOkay;
+	}
+	
+	public static void main(String[] args) {
+		LoginPage L = new LoginPage();
+	}
+	
+}

@@ -1,0 +1,442 @@
+//indicates the package under which the class belongs to
+package simpleCalculator;
+
+// import all essential java classes for the calculator class
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+
+// class for class for Calculator which implements ActionListener class
+// ActionListener class will help to add action listeners to buttons of the calculator
+public class Calculator implements ActionListener{
+	// declares a JFrame attribute 
+	JFrame calculatorFrame;
+	
+	// declares a JPanel attribute
+	JPanel calculatorPanel;
+	
+	// declares a JTextField attribute
+	JPanel executionScreen;
+	JTextField inputField;
+	JTextField resultField;
+	
+	// creates a array with JButton type that will stores the number buttons of the calculator
+	JButton[] numberButtons = new JButton[10];
+	
+	// creates an array list to store arithmetic operators buttons, and other non-numerical buttons 
+	// on the calculator
+	ArrayList<JButton> functionsAndOperatorsButtons = new ArrayList<JButton>();
+	
+	// creates all function and operator buttons
+	JButton additionButton, subtractionButton, multiplicationButton, divisionButton, equalButton, 
+	clearButton, decimalButton, negativeButton;
+
+	// creates fonts that have font style, font weight, and font size
+	Font myFont = new Font("Courier",Font.BOLD,15);
+	Font myFont2 = new Font("Courier",Font.BOLD,25);
+	
+	// declares variable that will store the first number, second number and result of the calculation
+	double firstNumber;
+	double secondNumber;
+	double result;
+	
+	// declares a variable that will define what operator being used
+	String operator;
+	
+	// constructor method for Calculator class
+	public Calculator() {
+		// creates the frame for the calculator
+		calculatorFrame = new JFrame("Calculator");
+		// set size of the frame
+		calculatorFrame.setSize(420, 560); 
+		// sets background color of the frame
+		calculatorFrame.getContentPane().setBackground(Color.BLACK);
+		// set resizable to false i.e the frame will have same dimension
+		calculatorFrame.setResizable(false);
+		// set the action for the closing button of the frame to exit
+		calculatorFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		// creates a border which is white and border width of 2 and rounded edges
+		Border fieldBorder = BorderFactory.createLineBorder(Color.WHITE, 2, true);
+		
+		// creates a border which is white and border width of 0 and rounded edges
+		Border fieldBorder1 = BorderFactory.createLineBorder(Color.WHITE, 0, true);
+		
+		// creates a field which will act as the calculator screen
+		resultField = new JTextField();
+		//sets size and position of the resultField
+		resultField.setBounds(0, 0, 300, 40);
+		// give the resultField a font i.e everything displayed in the resultField will have the font
+		resultField.setFont(myFont);
+		// set alignment of text in the inputField
+		resultField.setHorizontalAlignment(JTextField.RIGHT);
+		// set editable to false so that the user can't add input using keyboard
+		resultField.setEditable(false); 
+		// sets the resultField to be opaque to make the text in resultField visible
+		resultField.setOpaque(false);
+		// sets the font color of input in resultField to white
+		resultField.setForeground(Color.WHITE);
+		// sets the border of the resultField to the fieldBorder1 created above
+		resultField.setBorder(fieldBorder1);
+		
+		// creates a field which will act as the calculator screen
+		inputField = new JTextField();
+		//sets size and position of the execution field
+		inputField.setBounds(0, 40, 300, 40);
+		// give the execution Field a font i.e everything displayed in the inputField will have the font
+		inputField.setFont(myFont2);
+		// set alignment of text in the inputField
+		inputField.setHorizontalAlignment(JTextField.RIGHT);
+		// set editable to false so that the user can't add input using keyboard
+		inputField.setEditable(false);
+		// sets the inputField to be opaque to make the text in inputField visible
+		inputField.setOpaque(false);
+		// sets the font color of input in inputField to white
+		inputField.setForeground(Color.WHITE);
+		// sets the border of the inputField to the fieldBorder1 created above
+		inputField.setBorder(fieldBorder1);
+		
+		
+		// all the function buttons to the functionsAndOperatorsButtons arrayList
+		functionsAndOperatorsButtons.add(additionButton = new JButton("+"));
+		functionsAndOperatorsButtons.add(subtractionButton = new JButton("-"));
+		functionsAndOperatorsButtons.add(multiplicationButton = new JButton("*"));
+		functionsAndOperatorsButtons.add(divisionButton = new JButton("/"));
+		functionsAndOperatorsButtons.add(decimalButton = new JButton("."));
+		functionsAndOperatorsButtons.add(equalButton = new JButton("="));
+		functionsAndOperatorsButtons.add(clearButton = new JButton("C"));
+		functionsAndOperatorsButtons.add(negativeButton = new JButton("(-)"));
+		
+		// iterates to set properties of each function or operator button in the functionsAndOperatorsButtons
+		// array list
+		for (JButton button : functionsAndOperatorsButtons) {
+			// adds action listeners to the button
+			button.addActionListener(this);
+			// sets focusable to false to avoid box highlight when the button is clicked
+		    button.setFocusable(false);
+		    // sets background of the button
+		    button.setBackground(new Color(35, 33, 32));
+		    // sets font of the text on the button to be the font created earlier
+		    button.setFont(myFont);
+		    // sets the button to be opaque to allow the text to be more visible
+		    button.setOpaque(true);
+		    // sets the font color of the text on the button to white
+		    button.setForeground(Color.WHITE);
+			// creates a border which is gray and border width of 2 and rounded borders
+			Border border = BorderFactory.createLineBorder(new Color(40, 37, 35), 2, true);
+			// sets the border of the button to the bolder created above
+			button.setBorder(border);
+		 }
+		
+		for(int i =0;i<10;i++) {
+			numberButtons[i] = new JButton(String.valueOf(i));
+			// sets focusable to false to avoid box highlight when the button is clicked
+			numberButtons[i].setFocusable(false);
+			// adds action listeners to the button
+			numberButtons[i].addActionListener(this);
+			// set the background color of the button to kinda dark grey
+			numberButtons[i].setBackground(new Color(50, 44, 44));
+			// sets the button to be opaque to allow the text to be more visible
+			numberButtons[i].setOpaque(true);
+			// sets the font color of the text on the button to white
+			numberButtons[i].setForeground(Color.WHITE);
+			// sets font of the text on the button to be the font created earlier
+			numberButtons[i].setFont(myFont);
+			// creates a border which is dark gray and border width of 2 and rounded borders
+			Border border = BorderFactory.createLineBorder(Color.DARK_GRAY, 2, true);
+			// sets the border of the button to the bolder created above
+			numberButtons[i].setBorder(border);
+		}
+		
+		// creates a panel that will be the keypad container
+		calculatorPanel = new JPanel();
+		// sets the size and position of the panel
+		calculatorPanel.setBounds(50, 130, 300, 300);
+		// sets the layout of the panel to the specific layout defined (4 rows, 4 columns, horizontal gap
+		// of size 10 and vertical gap of size 10 
+		calculatorPanel.setLayout(new GridLayout(4,4,10,10));
+		// sets the panel to be clear since the frame is opaque
+		calculatorPanel.setOpaque(false);
+		
+		// creates a panel that will be the keypad container
+		executionScreen = new JPanel();
+		// sets the size and position of the panel
+		executionScreen.setBounds(50, 20, 300, 80);
+		// sets the layout to null because the layout was explicitly defined
+		executionScreen.setLayout(null);
+		// sets the panel to be clear since the frame is opaque
+		executionScreen.setOpaque(false);
+		// sets the border of the executionScreen to the fieldBorder created earlier
+		executionScreen.setBorder(fieldBorder);
+		
+		// adss the input field and result field to the execution screen
+		executionScreen.add(inputField);
+		executionScreen.add(resultField);
+		
+		
+		// sets bound for the clear button because it will appear more bigger than the other buttons
+		clearButton.setBounds(20,450,150,50);
+		//sets the background color of the clear button to dark orange-yellow color
+		clearButton.setBackground(new Color(179, 68, 20));
+		// creates a border which is dark gray and border width of 2 and rounded borders
+		Border bigButtonborder = BorderFactory.createLineBorder(Color.DARK_GRAY, 2);
+		// sets the border of the clear button to the bolder created above
+		clearButton.setBorder(bigButtonborder);
+		
+		// sets bound for the clear button because it will appear more bigger than the other buttons
+		negativeButton.setBounds(200,450,150,50);
+		//sets the background color of the clear button to dark orange-yellow color
+		negativeButton.setBackground(new Color(179, 68, 20));
+		// sets the border of the clear button to the bolder created above
+		negativeButton.setBorder(bigButtonborder);
+		
+		// add all the button in a sequence of how they will be ordered on the panel
+		calculatorPanel.add(numberButtons[1]);
+		calculatorPanel.add(numberButtons[2]);
+		calculatorPanel.add(numberButtons[3]);
+		calculatorPanel.add(additionButton);
+		calculatorPanel.add(numberButtons[4]);
+		calculatorPanel.add(numberButtons[5]);
+		calculatorPanel.add(numberButtons[6]);
+		calculatorPanel.add(subtractionButton);
+		calculatorPanel.add(numberButtons[7]);
+		calculatorPanel.add(numberButtons[8]);
+		calculatorPanel.add(numberButtons[9]);
+		calculatorPanel.add(multiplicationButton);
+		calculatorPanel.add(decimalButton);
+		calculatorPanel.add(numberButtons[0]);
+		calculatorPanel.add(negativeButton);
+		calculatorPanel.add(divisionButton);
+		
+		// adds the execution screen to the frame of the calculator
+		calculatorFrame.add(executionScreen);	
+		// adds the panel to the frame of the calculator
+		calculatorFrame.add(calculatorPanel);
+		// adds the clear button to the frame of the calculator
+		calculatorFrame.add(clearButton);
+		
+		// sets the layout to null because the layout was explicitly defined
+		calculatorFrame.setLayout(null); 
+		// sets the frame to be visible when the program is run
+		calculatorFrame.setVisible(true); 
+		
+	}
+	
+	// overrides the actionPerformed method of the ActionListener interface
+	@Override
+	public void actionPerformed(ActionEvent event) {
+		try {
+			// iterates to check if the source of the action event is from the number buttons
+			for(int i=0;i<10;i++) {
+				// check if the source of the action event is from the number buttons 
+				if(event.getSource() == numberButtons[i]) {
+					// updates the execution field by concatenating the number to it
+					inputField.setText(inputField.getText().concat(String.valueOf(i)));
+				}
+			}
+			
+			// checks if the source of the action event is the additionButton
+			if(event.getSource() == additionButton) {
+				// stores the number that was entered first
+				firstNumber = Double.parseDouble(inputField.getText());
+				// sets the operator variable to + sign
+				operator = "+";
+				// updates the resultField
+				resultField.setText(String.valueOf(firstNumber).replaceAll("\\.?0*$", "")+ " " + operator + " ");
+				// clears the screen. This will help to easily grab the second number.
+				inputField.setText("");
+			}
+			
+			// checks if the source of the action event is the subtractionButton
+			else if(event.getSource() == subtractionButton) {
+				// stores the number that was entered first
+				firstNumber = Double.parseDouble(inputField.getText());
+				// sets the operator variable to - sign
+				operator = "-";
+				// updates the resultField
+				resultField.setText(String.valueOf(firstNumber).replaceAll("\\.?0*$", "")+ " " + operator + " ");
+				// clears the screen. This will help to easily grab the second number.
+				inputField.setText("");
+			}
+			
+			// checks if the source of the action event is the multiplicationButton
+			else if(event.getSource() == multiplicationButton) {
+				// stores the number that was entered first
+				firstNumber = Double.parseDouble(inputField.getText());
+				// sets the operator variable to * sign
+				operator = "*";
+				// updates the resultField
+				resultField.setText(String.valueOf(firstNumber).replaceAll("\\.?0*$", "")+ " " + operator + " ");
+				// clears the screen. This will help to easily grab the second number.
+				inputField.setText("");
+			}
+			
+			// checks if the source of the action event is the divisionButton
+			else if(event.getSource() == divisionButton) {
+				// stores the number that was entered first
+				firstNumber = Double.parseDouble(inputField.getText());
+				// sets the operator variable to / sign
+				operator = "/";
+				// updates the resultField
+				resultField.setText(String.valueOf(firstNumber).replaceAll("\\.?0*$", "")+ " " + operator + " ");
+				// clears the screen. This will help to easily grab the second number.
+				inputField.setText("");
+			}
+			
+			// checks if the source of the action event is the equalButton
+			else if(event.getSource() == equalButton) {
+				// checks if there is an ongoing operation and if there is an operator
+				if (!resultField.getText().isEmpty() & !operator.equals("")) {
+					// checks if the operation is to be repeated i.e the result field already has "=" sign
+					// this will help when the user wants to keep for instance adding same number to the 
+					// result obtained by previous operation
+					if ((resultField.getText().charAt(resultField.getText().length()-2) == '=')){
+						// gets the index of the operator
+						int indexOfOperator = resultField.getText().indexOf(operator, 2);
+						// gets the index of the "=" sign
+						int indexOfEqual = resultField.getText().indexOf('=');
+						// gets the second number in the previous operation
+						String subStr = resultField.getText().substring(indexOfOperator+1, indexOfEqual-1);
+						// sets the second number to the same second number as previous operation
+						secondNumber = Double.parseDouble(subStr);
+					}
+					else {
+						// gets the second number
+						secondNumber = Double.parseDouble(inputField.getText());
+					}
+				} 
+				else {
+					resultField.setText(inputField.getText());
+				}
+				// depending on the operator, specific calculations will be done
+				switch(operator) {
+					//if operator was "+" 
+					case "+":
+						// the 2 number(firstNumber and secondNumber) will be added
+						result = add(firstNumber, secondNumber);
+						// the result will be displayed in the execcutionField
+						// when the number after the dot is only 0, the zero will be removed
+						inputField.setText(String.valueOf(result).replaceAll("\\.?0*$", ""));
+						// updates the resultField
+						resultField.setText(String.valueOf(firstNumber).replaceAll("\\.?0*$", "") + " " + operator +
+								" " + String.valueOf(secondNumber).replaceAll("\\.?0*$", "") + " " + 
+								"= ");
+						break;
+					
+					//if operator was "-" 
+					case "-":
+						// secondNumber will be subtracted from firstNumber
+						result = subtract(firstNumber, secondNumber);
+						// the result will be displayed in the execcutionField
+						// when the number after the dot is only 0, the zero will be removed
+						inputField.setText(String.valueOf(result).replaceAll("\\.?0*$", ""));
+						// updates the resultField
+						resultField.setText(String.valueOf(firstNumber).replaceAll("\\.?0*$", "") + " " + operator +
+								" " + String.valueOf(secondNumber).replaceAll("\\.?0*$", "") + " " + 
+								"= ");
+						break;
+						
+					//if operator was "*"
+					case "*":
+						// the 2 number(firstNumber and secondNumber) will be multiplied
+						result = multiply(firstNumber, secondNumber);
+						// the result will be displayed in the execcutionField
+						// when the number after the dot is only 0, the zero will be removed
+						inputField.setText(String.valueOf(result).replaceAll("\\.?0*$", ""));
+						// updates the resultField
+						resultField.setText(String.valueOf(firstNumber).replaceAll("\\.?0*$", "") + " " + operator +
+								" " + String.valueOf(secondNumber).replaceAll("\\.?0*$", "") + " " + 
+								"= ");
+						break;
+					
+					//if operator was "/"
+					case "/":
+						// if the second number is 0 i.e division by 0, then calculator will warn 
+						//the user than division by 0 is not permitted
+						if (secondNumber == 0) {
+							// display the message in the resultField 
+							resultField.setText("Division by 0 is not permitted");
+						}
+						//otherwise the division will be carried out
+						else { 
+							// divides the firstNumber by the secondNumber
+							result = divide(firstNumber, secondNumber);
+							// the result will be displayed in the inputField
+							// when the number after the dot is only 0, the zero will be removed
+							inputField.setText(String.valueOf(result).replaceAll("\\.?0*$", ""));
+							// updates the resultField
+							resultField.setText(String.valueOf(firstNumber).replaceAll("\\.?0*$", "") + " " + operator +
+									" " + String.valueOf(secondNumber).replaceAll("\\.?0*$", "") + " " + 
+									"= ");
+						}
+						break;
+				}
+				// the firstNumber will be set to result just in case the user needs to continue the calculation
+				// using the previous result
+				firstNumber=result;
+				
+			}
+			
+			// checks if the source of the action event is the clearButton
+			else if(event.getSource() == clearButton) {
+				// clears both fields
+				inputField.setText("");
+				resultField.setText("");
+				//resets the operator
+				operator = "";
+			}
+			
+			// checks if the source of the action event is the decimalButton
+			else if(event.getSource() == decimalButton) {
+				// adds a dot for decimal numbers
+				inputField.setText(inputField.getText().concat("."));
+			}
+			
+			if(event.getSource() == negativeButton) {
+				double temp = Double.parseDouble(inputField.getText());
+				temp*=-1;
+				inputField.setText(String.valueOf(temp));
+			}
+			
+				
+		}
+		
+		// catches any unauthorized operations e.g. adding a number to a null value
+		catch(NumberFormatException exception) {
+			resultField.setText("");
+		}
+		
+		catch (NullPointerException e){
+			resultField.setText(inputField.getText());
+		}
+		
+	}
+	
+	// a method to add two numbers and return the result
+	public double add(double x, double y) {
+		return x + y;
+	}
+	
+	// a method to subtract two numbers and return the result
+	public double subtract(double x, double y) {
+		return x - y;
+	}
+	
+	// a method to multiply two numbers and return the result
+	public double multiply(double x, double y) {
+		return x * y;
+	}
+	
+	// a method to divide two numbers and return the result
+	public double divide(double x, double y) {
+		return x/y;
+	}
+	
+	public static void main(String[] args) {
+		// creates an instance of the Calculator class
+		Calculator calculator = new Calculator();
+	}
+
+}

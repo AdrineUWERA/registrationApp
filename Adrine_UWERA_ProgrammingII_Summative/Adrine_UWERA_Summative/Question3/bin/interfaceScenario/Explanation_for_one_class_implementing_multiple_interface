@@ -1,0 +1,12 @@
+Link to a document with explanations: 
+https://docs.google.com/document/d/1wLyXuRv8IcbRA3kpCbeeTbc60Y44UbEwaIKr_iZx040/edit
+
+Note: the complete explanation is in the google doc
+
+Summary:
+Java supports multiple implementation of interfaces because only abstract methods whose implementations is done
+by the subclasses. And since, the methods of interfaces have no body, their implementations won’t be associated
+with complication issues as there is in multiple inheritance (e.g. not determining what class method to 
+inherit when superclasses have method with same signature). Also, a class implements an interface to add 
+functionalities to the class i.e a class can implement many interfaces to gain all the functionalities 
+needed by the class.

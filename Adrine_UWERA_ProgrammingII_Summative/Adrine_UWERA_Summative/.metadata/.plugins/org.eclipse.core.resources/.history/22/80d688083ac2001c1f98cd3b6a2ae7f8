@@ -1,0 +1,154 @@
+// indicates the package in which the class is in
+package ALU;
+
+// imports all JComponent needed for the Admission Page
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.Border;
+
+// imports classes(Color and BorderFactory) that will used to format the admission page components and content
+import java.awt.Color;
+import javax.swing.BorderFactory;
+
+// a class for admission page
+public class AdmissionSlot {
+	
+	JPanel admissionPage;
+	
+	JLabel rollNumberLabel;
+	JLabel nameLabel;
+	JLabel emailLabel;
+	JLabel phoneNumberLabel;
+	JLabel countryOfResidenceLabel;
+	JLabel nationalityLabel;
+	JLabel campusLabel;
+	JLabel IntakeLabel;
+	JLabel gradesLabel;
+	JLabel admissionStatusLabel;
+	JLabel majorLabel;
+	
+	JTextField rollNumber;
+	JTextField name;
+	JTextField email;
+	JTextField phoneNumber;
+	JTextField countryOfResidence;
+	JTextField nationality;
+	JTextField grades;
+	JTextField intake;
+	JTextField campus;
+	JTextField admissionStatus;
+	JTextField major;
+	
+	public AdmissionSlot() {
+		
+		admissionPage = new JPanel();		
+		Border fieldBorder = BorderFactory.createLineBorder(new Color(236, 236, 236), 2, true);
+	
+		admissionPage.setSize(460,720);  
+		admissionPage.setLayout(null);  		
+		admissionPage.setVisible(true);
+		
+		rollNumberLabel = new JLabel("Roll number: ");  
+		rollNumberLabel.setBounds(50, 30, 300, 20); 
+		rollNumber = new JTextField();
+		rollNumber.setBorder(fieldBorder);
+		rollNumber.setEditable(false);
+		rollNumber.setBounds(50, 55, 350, 20); 
+		
+		nameLabel = new JLabel("Full name: ");  
+		nameLabel.setBounds(50, 85, 300,20); 
+		name = new JTextField();
+		name.setBorder(fieldBorder);
+		name.setEditable(false);
+		name.setBounds(50,110, 350, 20); 
+		
+		emailLabel = new JLabel("Email address: ");  
+		emailLabel.setBounds(50, 140, 300,20); 
+		email = new JTextField();
+		email.setBorder(fieldBorder);
+		email.setEditable(false);
+		email.setBounds(50,165, 350,20);
+		
+		phoneNumberLabel = new JLabel("Phone number: ");  
+		phoneNumberLabel.setBounds(50,195, 300,20); 
+		phoneNumber = new JTextField();
+		phoneNumber.setBorder(fieldBorder);
+		phoneNumber.setEditable(false);
+		phoneNumber.setBounds(50,220, 350,20); 
+	    
+		countryOfResidenceLabel = new JLabel("Country of residence: ");  
+		countryOfResidenceLabel.setBounds(50,250, 300,20);  
+		countryOfResidence = new JTextField();
+		countryOfResidence.setBorder(fieldBorder);
+		countryOfResidence.setEditable(false);
+		countryOfResidence.setBounds(50,275, 350,20); 
+		
+		nationalityLabel = new JLabel("Nationality: ");  
+		nationalityLabel.setBounds(50,305, 100,20); 
+		nationality = new JTextField();
+		nationality.setBorder(fieldBorder);
+		nationality.setEditable(false);
+		nationality.setBounds(50,330, 350,20); 
+		
+		campusLabel = new JLabel("Campus: ");  
+		campusLabel.setBounds(50,360, 100,20); 
+		campus = new JTextField();
+		campus.setBorder(fieldBorder);
+		campus.setEditable(false);
+		campus.setBounds(50,385, 350,30); 
+		
+		IntakeLabel = new JLabel("Intake: ");  
+		IntakeLabel.setBounds(50,415, 300,20); 
+		intake = new JTextField();
+		intake.setBorder(fieldBorder);
+		intake.setEditable(false);
+		intake.setBounds(50,440, 350,20); 
+		
+		gradesLabel = new JLabel("Grade out of 20: ");  
+		gradesLabel.setBounds(50,470, 300,20); 
+		grades = new JTextField();
+		grades.setBorder(fieldBorder);
+		grades.setEditable(false);
+		grades.setBounds(50,495, 350,20); 
+		
+		majorLabel = new JLabel("Major: ");  
+		majorLabel.setBounds(50,525, 300,20); 
+		major = new JTextField();
+		major.setBorder(fieldBorder);
+		major.setEditable(false);
+		major.setBounds(50,550, 350,20); 
+		
+		admissionStatusLabel = new JLabel("Admission status: ");  
+		admissionStatusLabel.setBounds(50,580, 300,20); 
+		admissionStatus = new JTextField();
+		admissionStatus.setBorder(fieldBorder);
+		admissionStatus.setEditable(false);
+		admissionStatus.setBounds(50,605, 350,20); 
+		
+		admissionPage.add(rollNumberLabel);	
+		admissionPage.add(rollNumber);	
+		admissionPage.add(nameLabel);
+		admissionPage.add(name);
+		admissionPage.add(emailLabel);
+		admissionPage.add(email);
+		admissionPage.add(phoneNumberLabel);		
+		admissionPage.add(phoneNumber);
+		admissionPage.add(countryOfResidenceLabel);
+		admissionPage.add(countryOfResidence);
+		admissionPage.add(nationalityLabel);
+		admissionPage.add(nationality);
+		admissionPage.add(campusLabel);
+		admissionPage.add(campus); 
+		admissionPage.add(IntakeLabel);
+		admissionPage.add(intake);
+		admissionPage.add(gradesLabel);
+		admissionPage.add(grades);
+		admissionPage.add(admissionStatusLabel);
+		admissionPage.add(admissionStatus);
+		admissionPage.add(majorLabel);
+		admissionPage.add(major);
+		
+	}
+	
+}

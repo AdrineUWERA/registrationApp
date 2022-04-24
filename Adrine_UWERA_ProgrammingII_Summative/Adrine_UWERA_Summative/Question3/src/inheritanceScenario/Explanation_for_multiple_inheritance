@@ -1,0 +1,11 @@
+Link to a document with explanations: 
+https://docs.google.com/document/d/1wLyXuRv8IcbRA3kpCbeeTbc60Y44UbEwaIKr_iZx040/edit?usp=sharing 
+
+Note: the complete explanation is in the google doc
+
+Summary: 
+Java does not support multiple inheritance because, whenever there is method that have same  signature or 
+attributes with same name in both superclasses, java won’t decide which class  method or class attribute to 
+implement or which class method and class attributes gets the priority. So Java does not simplify support
+multiple inheritance due to that confusion occurs when attributes or methods  from the superclasses have same 
+signature.

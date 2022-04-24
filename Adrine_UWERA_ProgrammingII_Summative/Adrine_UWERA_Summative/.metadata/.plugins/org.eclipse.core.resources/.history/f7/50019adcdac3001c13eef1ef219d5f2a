@@ -1,0 +1,24 @@
+package simpleCalculator;
+
+
+import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Test;
+
+public class TestingCalculatorOperations {
+	@Test
+	public void test() throws InterruptedException {
+		Calculator calculator = new Calculator();
+		
+		double x = calculator.add(6, 4);
+		assertEquals(x, 10);
+		
+		double y = calculator.subtract(6, 4);
+		assertEquals(y, 2);
+		
+		double z = calculator.multiply(6, 4);
+		assertEquals(z, 24);
+		
+		double w = calculator.divide(12, 4);
+		assertEquals(w, 3);
+	}
+}

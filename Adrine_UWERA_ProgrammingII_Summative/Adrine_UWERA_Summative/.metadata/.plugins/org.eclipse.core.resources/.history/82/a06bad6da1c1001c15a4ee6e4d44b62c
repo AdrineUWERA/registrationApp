@@ -1,0 +1,29 @@
+package simpleCalculator;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+
+public class Test implements Runnable, ActionListener{
+	JButton clickMe;
+	
+	public Test() {
+		clickMe = new JButton();
+	}
+	
+	@Override
+	public void run() {
+		System.out.println("The testing was successful");
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (e.getSource() == clickMe) {
+			System.out.println("Button clicked");
+		}
+		
+	}
+
+}

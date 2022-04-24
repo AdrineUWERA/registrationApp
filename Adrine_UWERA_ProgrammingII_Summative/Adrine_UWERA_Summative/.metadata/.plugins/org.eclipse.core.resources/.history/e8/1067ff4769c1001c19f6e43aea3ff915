@@ -1,0 +1,11 @@
+package inheritanceScenario;
+
+public class Child extends Parent1, Parent2 {
+	public static void main(String[] args) {
+		Child child1 = new Child();
+		child1.walks();
+		child1.writes();
+		System.out.println(child1.eyeColor);
+		
+	}
+}

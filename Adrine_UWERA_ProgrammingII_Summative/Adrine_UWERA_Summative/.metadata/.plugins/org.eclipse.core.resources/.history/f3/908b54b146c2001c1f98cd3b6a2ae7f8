@@ -1,0 +1,107 @@
+// indicates the package in which the class is in
+package ALU;
+
+//imports all the classes needed for the degree programs Page (JComponents, sql connection)
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Statement;
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
+// a class for degree program page
+public class DegreeProgram {
+	// declares a JPanel attribute for the degree program page
+	JPanel degreeProgPage;
+	// declares a scroll pane attribute for the degree program page
+	JScrollPane scrollablePane;
+	// declares a JTable attribute that will contain the student in the specific degree program 
+	JTable dataTable;
+	// declares a variable attribute that defines the degree program name
+	String programName;
+	
+	// constructor for the degree program page
+	public DegreeProgram(String program) {
+		// sets the degree program name to the passed in program name
+		programName = program;
+		
+		// creates the JPanel for the degree program page
+		// this will be a container of the degree program page
+		degreeProgPage = new JPanel();
+		// set size of the panel of the degree program page
+		degreeProgPage.setSize(380,720);
+		// sets the position of the panel to be at the beginning of the frame
+		degreeProgPage.setLocation(0,0);
+		
+		// creates the table that will display the students enrolled in that degree program
+		dataTable= new JTable(); 	
+		// sets the position of the table to be at the beginning of the scrollable Pane
+		dataTable.setLocation(0, 0);
+		// sets the size of the table
+		dataTable.setSize(380, 520);
+		
+		// creates a scrollable pane which holds the table of students
+		scrollablePane = new JScrollPane(dataTable, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+        ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED); 
+		// sets the size of the scrollable pane
+		scrollablePane.setSize(380, 550);
+		// adds the scrollable pane to the main panel(degreeProgPage)
+		degreeProgPage.add(scrollablePane);
+		
+		try {
+			
+			//1. Create database connection
+			Connection myConn = DriverManager.getConnection(
+		            "jdbc:mysql://localhost:3306/alu_registration_database","root", "");
+			
+			//2. Create a statement
+			Statement mySt = myConn.createStatement();
+						
+			String selectQuery = "select * from applicants_table;";
+			
+			ResultSet myResult = mySt.executeQuery(selectQuery); 
+			ResultSetMetaData studentData = myResult.getMetaData();
+			DefaultTableModel model = (DefaultTableModel) dataTable.getModel();
+			int columns = studentData.getColumnCount();
+			String[] columnNames = new String[2];
+			
+			int x = 0;
+			for(int i = 0; i<columns; i++) {
+				if (studentData.getColumnName(i+1).equals("studentRegistrationNumber") | 
+					studentData.getColumnName(i+1).equals("fullName")) {
+					columnNames[x] = studentData.getColumnName(i+1);
+					x++;
+				}
+				else {
+					continue;
+				}
+			}
+			model.setColumnIdentifiers(columnNames);
+			
+			String rollNum, stName;
+			while(myResult.next()) {
+				if (myResult.getString("major").equals(programName)) {
+					rollNum = myResult.getString("studentRegistrationNumber");
+					stName = myResult.getString("fullName");
+					String[] rows = {rollNum, stName};
+					model.addRow(rows);
+				}
+			}
+			
+		}
+		
+		catch(SQLException exception) {
+			if(exception.getErrorCode() == 0 ){
+				System.out.println("Database connection failed. Please check if your database is connected."); 
+			}
+			exception.printStackTrace();
+		}
+		
+		  		
+		degreeProgPage.setVisible(true);
+		
+	}
+	
+}

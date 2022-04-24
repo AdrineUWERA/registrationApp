@@ -1,0 +1,50 @@
+package simpleCalculator;
+
+import static org.junit.jupiter.api.Assertions.*;
+import java.awt.event.ActionEvent;
+
+import org.junit.jupiter.api.Test;
+
+class TestingCalculatorOperations {
+
+	@Test
+	public void test() throws InterruptedException {
+		Calculator calculator = new Calculator();
+//		Thread calcThread = new Thread(calculator);
+//		calcThread.start();
+//		calcThread.join();
+	
+		double fnumber = calculator.fnumber;
+		double snumber = calculator.snumber;
+		String operator = calculator.operator;
+		double result = calculator.result;
+		double actualOutput; 
+		
+		switch(operator) {
+		case "+":
+			actualOutput = fnumber + snumber;
+			assertEquals(actualOutput, result);
+			break;
+		case "-":
+			actualOutput = fnumber - snumber; 
+			assertEquals(actualOutput, result);
+			break;
+		case "*":
+			actualOutput = fnumber * snumber; 
+			assertEquals(actualOutput, result);
+			break;
+		case "/":
+			if (snumber == 0) {
+				System.out.println("Division by 0 is not permitted");
+			}
+			else {
+				actualOutput = fnumber/snumber;
+				assertEquals(actualOutput, result);
+			}
+			break;
+		}
+		
+//		assertEquals(actualOutput, result);
+	}
+
+}

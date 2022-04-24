@@ -1,0 +1,77 @@
+// indicates the package in which the class is in
+package ALU;
+
+// imports all the java swing components classes
+import javax.swing.*;
+
+// class for the login page
+public class LoginPage {
+	// declares a JPanel attribute for the login page
+	JPanel loginPanel;
+	
+	// declares labels attributes for the fields on the login page
+	JLabel result;
+	JLabel emailLabel;
+	JLabel passwordLabel;
+	JTextField email;
+	JTextField password;
+	
+	// declares a login button attribute
+	JButton loginBtn;
+	
+	// declares a logout button attribute
+	JButton logoutBtn;
+	
+	// declares variables that will store user's inputs from the field
+	String studentEmail;
+	String studentPassword;
+	
+	
+	// constructor for the login page
+	public LoginPage() {
+		// creates the JPanel for the login page
+		// this will be a container of the login page
+		loginPanel = new JPanel();
+		
+		emailLabel = new JLabel("Email: ");  
+		emailLabel.setBounds(50, 50, 350, 20); 
+		email = new JTextField();
+		email.setBounds(50, 80, 350, 30); 
+		
+		passwordLabel = new JLabel("Password: ");  
+	    passwordLabel.setBounds(50, 120, 300,30); 
+		password = new JTextField();
+		password.setBounds(50,160, 350, 30);  
+	    		
+		result = new JLabel("");  
+		result.setBounds(50,20, 300,30); 
+	   
+		loginPanel.add(result);
+	    loginPanel.add(email);
+	    loginPanel.add(password);
+	    loginPanel.add(emailLabel);
+	    loginPanel.add(passwordLabel);
+	    
+	    
+		loginBtn =  new JButton("Login");
+		loginBtn.setBounds(50,220,100,30);  
+		loginBtn.setEnabled(true);
+		loginPanel.add(loginBtn); 		
+		loginPanel.setSize(460,320);  
+		loginPanel.setLayout(null);  		
+		loginPanel.setVisible(true); 
+	}
+	
+	public boolean isLoggedIn() {
+		boolean isOkay = false;
+		if (result.getText() == "Logged in successfully") {
+			isOkay = true;
+		} 
+		return isOkay;
+	}
+	
+	public static void main(String[] args) {
+		LoginPage L = new LoginPage();
+	}
+	
+}

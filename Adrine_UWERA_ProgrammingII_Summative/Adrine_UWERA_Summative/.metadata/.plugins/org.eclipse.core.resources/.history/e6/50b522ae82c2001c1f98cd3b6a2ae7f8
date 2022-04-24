@@ -1,0 +1,338 @@
+//indicates the package under which the class belongs to
+package simpleCalculator;
+
+// import all essential java classes for the calculator class
+import javax.swing.*;
+import javax.swing.border.Border;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.ArrayList;
+
+// class for class for Calculator which implements ActionListener class
+// ActionListener class will help to add action listeners to buttons of the calculator
+public class Calculator implements ActionListener{
+	// declares a JFrame attribute 
+	JFrame calculatorFrame;
+	
+	// declares a JPanel attribute
+	JPanel calculatorPanel;
+	
+	// declares a JTextField attribute
+	JTextField executionField;
+	
+	// creates a array with JButton type that will stores the number buttons of the calculator
+	JButton[] numberButtons = new JButton[10];
+	
+	// creates an array list to store arithmetic operators buttons, and other non-numerical buttons 
+	// on the calculator
+	ArrayList<JButton> functionsAndOperatorsButtons = new ArrayList<JButton>();
+	
+	// creates all function and operator buttons
+	JButton additionButton, subtractionButton, multiplicationButton, divisionButton, equalButton, 
+	clearButton, decimalButton;
+
+	// creates a Font that has font style, font weight, and font size
+	Font myFont = new Font("Courier",Font.BOLD,15);
+	
+	// declares variable that will store the first number, second number and result of the calculation
+	double fnumber;
+	double snumber;
+	double result;
+	
+	// declares a variable that will define what operator being used
+	String operator;
+	
+	// constructor method for Calculator class
+	public Calculator() {
+		// creates the frame for the calculator
+		calculatorFrame = new JFrame("Calculator");
+		// set size of the frame
+		calculatorFrame.setSize(420, 560); 
+		// sets background color of the frame
+		calculatorFrame.getContentPane().setBackground(Color.BLACK);
+		// set resizable to false i.e the frame will have same dimension
+		calculatorFrame.setResizable(false);
+		// set the action for the closing button of the frame to exit
+		calculatorFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		// creates a field which will act as the calculator screen
+		executionField = new JTextField();
+		//sets size and position of the execution field
+		executionField.setBounds(50, 20, 300, 80);
+		// give the execution Field a font i.e everything displayed in the executionField will have the font
+		executionField.setFont(myFont);
+		// set alignment of text in the executionField
+		executionField.setHorizontalAlignment(JTextField.RIGHT);
+		// set editable to false so that the user can't add input using keyboard
+		executionField.setEditable(false);
+		// sets the executionField to be opaque to make the text in executionField visible
+		executionField.setOpaque(false);
+		// sets the font color of input in executionField to white
+		executionField.setForeground(Color.WHITE);
+		// creates a border which is white and border width of 2 and rounded edges
+		Border fieldBorder = BorderFactory.createLineBorder(Color.WHITE, 2, true);
+		// sets the border of the executionField to the bolder created above
+		executionField.setBorder(fieldBorder);
+		
+		
+		// all the function buttons to the functionsAndOperatorsButtons arrayList
+		functionsAndOperatorsButtons.add(additionButton = new JButton("+"));
+		functionsAndOperatorsButtons.add(subtractionButton = new JButton("-"));
+		functionsAndOperatorsButtons.add(multiplicationButton = new JButton("*"));
+		functionsAndOperatorsButtons.add(divisionButton = new JButton("/"));
+		functionsAndOperatorsButtons.add(decimalButton = new JButton("."));
+		functionsAndOperatorsButtons.add(equalButton = new JButton("="));
+		functionsAndOperatorsButtons.add(clearButton = new JButton("C"));
+		
+		// iterates to set properties of each function or operator button in the functionsAndOperatorsButtons
+		// array list
+		for (JButton button : functionsAndOperatorsButtons) {
+			// adds action listeners to the button
+			button.addActionListener(this);
+			// sets focusable to false to avoid box highlight when the button is clicked
+		    button.setFocusable(false);
+		    // sets background of the button
+		    button.setBackground(new Color(35, 33, 32));
+		    // sets font of the text on the button to be the font created earlier
+		    button.setFont(myFont);
+		    // sets the button to be opaque to allow the text to be more visible
+		    button.setOpaque(true);
+		    // sets the font color of the text on the button to white
+		    button.setForeground(Color.WHITE);
+			// creates a border which is gray and border width of 2 and rounded borders
+			Border border = BorderFactory.createLineBorder(new Color(40, 37, 35), 2, true);
+			// sets the border of the button to the bolder created above
+			button.setBorder(border);
+		 }
+		
+		for(int i =0;i<10;i++) {
+			numberButtons[i] = new JButton(String.valueOf(i));
+			// sets focusable to false to avoid box highlight when the button is clicked
+			numberButtons[i].setFocusable(false);
+			// adds action listeners to the button
+			numberButtons[i].addActionListener(this);
+			// set the background color of the button to kinda dark grey
+			numberButtons[i].setBackground(new Color(50, 44, 44));
+			// sets the button to be opaque to allow the text to be more visible
+			numberButtons[i].setOpaque(true);
+			// sets the font color of the text on the button to white
+			numberButtons[i].setForeground(Color.WHITE);
+			// sets font of the text on the button to be the font created earlier
+			numberButtons[i].setFont(myFont);
+			// creates a border which is dark gray and border width of 2 and rounded borders
+			Border border = BorderFactory.createLineBorder(Color.DARK_GRAY, 2, true);
+			// sets the border of the button to the bolder created above
+			numberButtons[i].setBorder(border);
+		}
+		
+		// creates a panel that will be the keypad container
+		calculatorPanel = new JPanel();
+		// sets the size and position of the panel
+		calculatorPanel.setBounds(50, 130, 300, 300);
+		// sets the layout of the panel to the specific layout defined (4 rows, 4 columns, horizontal gap
+		// of size 10 and vertical gap of size 10 
+		calculatorPanel.setLayout(new GridLayout(4,4,10,10));
+		// sets the panel to be clear since the frame is opaque
+		calculatorPanel.setOpaque(false);
+		
+		// sets bound for the clear button because it will appear more bigger than the other buttons
+		clearButton.setBounds(200,450,150,50);
+		//sets the background color of the clear button to dark orange-yellow color
+		clearButton.setBackground(new Color(179, 68, 20));
+		// creates a border which is dark gray and border width of 2 and rounded borders
+		Border clearButtonborder = BorderFactory.createLineBorder(Color.DARK_GRAY, 2);
+		// sets the border of the clear button to the bolder created above
+		clearButton.setBorder(clearButtonborder);
+		
+		// add all the button in a sequence of how they will be ordered on the panel
+		calculatorPanel.add(numberButtons[1]);
+		calculatorPanel.add(numberButtons[2]);
+		calculatorPanel.add(numberButtons[3]);
+		calculatorPanel.add(additionButton);
+		calculatorPanel.add(numberButtons[4]);
+		calculatorPanel.add(numberButtons[5]);
+		calculatorPanel.add(numberButtons[6]);
+		calculatorPanel.add(subtractionButton);
+		calculatorPanel.add(numberButtons[7]);
+		calculatorPanel.add(numberButtons[8]);
+		calculatorPanel.add(numberButtons[9]);
+		calculatorPanel.add(multiplicationButton);
+		calculatorPanel.add(decimalButton);
+		calculatorPanel.add(numberButtons[0]);
+		calculatorPanel.add(equalButton);
+		calculatorPanel.add(divisionButton);
+		
+		// adds the execution field to the frame of the calculator
+		calculatorFrame.add(executionField);	
+		// adds the panel to the frame of the calculator
+		calculatorFrame.add(calculatorPanel);
+		// adds the clear button to the frame of the calculator
+		calculatorFrame.add(clearButton);
+		
+		// sets the layout to null because the layout was explicitly defined
+		calculatorFrame.setLayout(null); 
+		// sets the frame to be visible when the program is run
+		calculatorFrame.setVisible(true); 
+		
+	}
+	
+	// overrides the actionPerformed method of the ActionListener interface
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		try {
+			// iterates to check if the source of the action event is from the number buttons
+			for(int i=0;i<10;i++) {
+				// check if the source of the action event is from the number buttons 
+				if(e.getSource() == numberButtons[i]) {
+					// updates the execution field by concatenating the number to it
+					executionField.setText(executionField.getText().concat(String.valueOf(i)));
+				}
+			}
+			
+			// checks if the source of the action event is the additionButton
+			if(e.getSource() == additionButton) {
+				// stores the number that was entered first
+				fnumber = Double.parseDouble(executionField.getText());
+				// sets the operator variable to + sign
+				operator = "+";
+				// clears the screen. This will help to easily grab the second number.
+				executionField.setText("");
+			}
+			
+			// checks if the source of the action event is the subtractionButton
+			else if(e.getSource() == subtractionButton) {
+				// stores the number that was entered first
+				fnumber = Double.parseDouble(executionField.getText());
+				// sets the operator variable to - sign
+				operator = "-";
+				// clears the screen. This will help to easily grab the second number.
+				executionField.setText("");
+			}
+			
+			// checks if the source of the action event is the multiplicationButton
+			else if(e.getSource() == multiplicationButton) {
+				// stores the number that was entered first
+				fnumber = Double.parseDouble(executionField.getText());
+				// sets the operator variable to * sign
+				operator = "*";
+				// clears the screen. This will help to easily grab the second number.
+				executionField.setText("");
+			}
+			
+			// checks if the source of the action event is the divisionButton
+			else if(e.getSource() == divisionButton) {
+				// stores the number that was entered first
+				fnumber = Double.parseDouble(executionField.getText());
+				// sets the operator variable to / sign
+				operator = "/";
+				// clears the screen. This will help to easily grab the second number.
+				executionField.setText("");
+			}
+			
+			// checks if the source of the action event is the equalButton
+			else if(e.getSource() == equalButton) {
+				// gets the second number
+				snumber=Double.parseDouble(executionField.getText());
+				// depending on the operator, specific calculations will be done
+				switch(operator) {
+					//if operator was + 
+					case "+":
+						// the 2 number(fnumber and snumber) will be added
+						result = add(fnumber, snumber);
+						// the result will be displayed in the execcutionField
+						// when the number after the dot is only 0, the zero will be removed
+						executionField.setText(String.valueOf(fnumber) + operator + String.valueOf(snumber) +
+								"=" + String.valueOf(result).replaceAll("\\.?0*$", ""));
+	
+						break;
+					
+					//if operator was - 
+					case "-":
+						// snumber will be subtracted from fnumber) 
+						result = subtract(fnumber, snumber);
+						// the result will be displayed in the execcutionField
+						// when the number after the dot is only 0, the zero will be removed
+						executionField.setText(String.valueOf(result).replaceAll("\\.?0*$", ""));
+						break;
+						
+					//if operator was *
+					case "*":
+						// the 2 number(fnumber and snumber) will be multiplied
+						result = multiply(fnumber, snumber);
+						// the result will be displayed in the execcutionField
+						// when the number after the dot is only 0, the zero will be removed
+						executionField.setText(String.valueOf(result).replaceAll("\\.?0*$", ""));
+						break;
+					
+					//if operator was /
+					case "/":
+						// if the second number is 0 i.e division by 0, then calculator will warn 
+						//the user than division by 0 is not permitted
+						if (snumber == 0) {
+							// display the message in the executionField 
+							executionField.setText("Division by 0 is not permitted");
+						}
+						//otherwise the division will be carried out
+						else { 
+							// divides the fnumber by the snumber
+							result = divide(fnumber, snumber);
+							// the result will be displayed in the execcutionField
+							// when the number after the dot is only 0, the zero will be removed
+							executionField.setText(String.valueOf(result).replaceAll("\\.?0*$", ""));
+						}
+						break;
+				}
+				// the fnumber will be set to result just in case the user needs to continue the calculation
+				// using the previous result
+				fnumber=result;
+			}
+			
+			// checks if the source of the action event is the clearButton
+			else if(e.getSource() == clearButton) {
+				// clears the screen
+				executionField.setText("");
+			}
+			
+			// checks if the source of the action event is the decimalButton
+			else if(e.getSource() == decimalButton) {
+				// adds a dot for decimal numbers
+				executionField.setText(executionField.getText().concat("."));
+			}
+			
+				
+		}
+		
+		// catches any unauthorized operations e.g. adding a number to a null value
+		catch(NumberFormatException exception) {
+//			executionField.setText("Invalid operation");
+			exception.printStackTrace();
+		}
+		
+	}
+	
+	// a method to add two numbers and return the result
+	public double add(double x, double y) {
+		return x + y;
+	}
+	
+	// a method to subtract two numbers and return the result
+	public double subtract(double x, double y) {
+		return x - y;
+	}
+	
+	// a method to multiply two numbers and return the result
+	public double multiply(double x, double y) {
+		return x * y;
+	}
+	
+	// a method to divide two numbers and return the result
+	public double divide(double x, double y) {
+		return x/y;
+	}
+	
+	public static void main(String[] args) {
+		// creates an instance of the Calculator class
+		Calculator calculator = new Calculator();
+	}
+
+}

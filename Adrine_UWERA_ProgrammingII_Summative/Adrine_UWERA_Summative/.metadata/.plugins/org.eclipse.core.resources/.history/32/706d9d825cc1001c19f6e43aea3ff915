@@ -1,0 +1,88 @@
+package inheritanceScenario;
+
+import java.util.ArrayList;
+
+public class Student {
+	protected String studentName;
+	String major;
+	int yearOfStudy;
+	
+	ArrayList<String> subjects = new ArrayList<String>();
+	private double grades = 0;
+	
+	
+	public Student(String name, String major, int year) {
+		this.studentName = name;
+		this.major = major;
+		this.yearOfStudy = year;
+	}
+	
+	public void takesSubject(String subject) {
+		subjects.add(subject);
+	}
+	
+	public void getAllSubjects() {
+		String allSubj = studentName + "takes";
+		for (String subj: subjects) {
+			allSubj = allSubj.concat(" " + subj + ",");
+		}
+		System.out.println(allSubj);
+	}
+	
+	public void revise(String subject) {
+		System.out.println(studentName + " is revising " + subject);
+	}
+	
+	public void takesExam(String subject) {
+		System.out.println(studentName + " is taking a " + subject + " exam");
+	}
+	
+	public double getExamGrade(int grade) {
+		return this.grades += grade;
+	}
+	
+	public void getsPromoted(double requiredScore) {
+		if (this.grades > requiredScore) {
+			System.out.println("Got promoted");
+			this.yearOfStudy += 1;
+		}
+		
+		else {
+			System.out.println("Not promoted");
+		}
+		
+	}
+	
+	public double getGrade() {
+		return this.grades;
+	}
+	
+	public void setGrade(double newGrade) {
+		this.grades = newGrade;
+	} 
+	
+	public String getStudentName() {
+		return studentName;
+	}
+
+	public void setStudentName(String studentName) {
+		this.studentName = studentName;
+	}
+
+	public String getMajor() {
+		return major;
+	}
+
+	public void setMajor(String major) {
+		this.major = major;
+	}
+
+	public int getYearOfStudy() {
+		return yearOfStudy;
+	}
+
+	public void setYearOfStudy(int yearOfStudy) {
+		this.yearOfStudy = yearOfStudy;
+	}
+
+}

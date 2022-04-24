@@ -1,0 +1,465 @@
+package ALU;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDate;
+
+import javax.swing.*;
+
+public class AluRegistrationApp {
+
+	JFrame registrationPortal;
+	JTabbedPane mainPane; 
+	JPanel frontPage; 
+	JPanel signUpPage;
+	JPanel loginPage;
+	JPanel registrationPage;
+	JPanel admissionSlot;
+	JButton signupBtn;
+	JButton loginBtn;
+	JButton logoutBtn;
+	JLabel landingPageTitle;
+	JTextArea landingPageContent;
+	JLabel orLabel;
+	LoginPage login;
+	SignUpPage signIn;
+	RegistrationPage register;
+	AdmissionSlot admissionDetails;
+	DegreeProgram computerScienceProgram;
+	DegreeProgram globalChallengesProgram;
+	DegreeProgram businessStudiesProgram;
+	
+	
+	public AluRegistrationApp() {
+		registrationPortal = new JFrame();
+		mainPane = new JTabbedPane();  
+		frontPage = new JPanel();
+		
+			
+		Font myFont = new Font("Dialog",Font.BOLD,20);
+		landingPageTitle = new JLabel("ALU REGISTRATION PORTAL", JLabel.CENTER);
+		landingPageTitle.setBounds(50, 50, 350, 50);
+		landingPageTitle.setFont(myFont);
+		
+		landingPageContent = new JTextArea("        Welcome to ALU registration portal.\nLog into "
+				+ "your account or create an account \n   to be able to register for the next cohort");
+		landingPageContent.setBounds(110, 120, 300, 50);
+		landingPageContent.setBackground(new Color(236, 236, 236));
+		landingPageContent.setEditable(false);
+		
+		signupBtn =  new JButton("Sign Up");  
+		signupBtn.setBounds(120, 300, 200, 30);
+		signupBtn.setEnabled(true);		
+			
+		orLabel = new JLabel("Or");
+		orLabel.setBounds(210, 250, 50, 30);
+		
+		loginBtn =  new JButton("Login");  
+		loginBtn.setBounds(120, 200, 200, 30);
+		loginBtn.setEnabled(true);
+		
+		
+		frontPage.add(landingPageTitle);
+		frontPage.add(landingPageContent);
+		frontPage.add(signupBtn);
+		frontPage.add(orLabel);
+		frontPage.add(loginBtn);
+		
+		login = new LoginPage();
+		signIn = new SignUpPage();
+		register = new RegistrationPage();
+		admissionDetails = new AdmissionSlot();
+		computerScienceProgram = new DegreeProgram("Computer science");
+		globalChallengesProgram = new DegreeProgram("Global challenges");
+		businessStudiesProgram = new DegreeProgram("Business studies");
+		
+		mainPane.setBounds(0,0,490,730); 
+		mainPane.add("Home", frontPage);
+		mainPane.add("Login", login.loginPanel);
+		mainPane.add("Sign Up", signIn.signInPanel);
+		mainPane.add("Registration", register.registrationForm);
+		mainPane.add("Admission", admissionDetails.admissionPage);
+		mainPane.add("Computer science", computerScienceProgram.degreeProgPage);
+		mainPane.add("Global challenges", globalChallengesProgram.degreeProgPage);
+		mainPane.add("Business studies", businessStudiesProgram.degreeProgPage);
+		
+		
+		signupBtn.addActionListener((ActionListener) new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mainPane.setSelectedComponent(signIn.signInPanel);
+			}  
+		});
+		
+		loginBtn.addActionListener((ActionListener) new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				mainPane.setSelectedComponent(login.loginPanel);
+				
+			}  
+		});
+		
+		mainPane.setEnabledAt(3, false);
+		mainPane.setEnabledAt(4, false);
+		mainPane.setEnabledAt(5, false);
+		mainPane.setEnabledAt(6, false);
+		mainPane.setEnabledAt(7, false);
+		
+		
+		login.loginBtn.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				login.studentEmail = login.email.getText();
+				login.studentPassword = login.password.getText();
+				String atEmail = "@";
+				String dot = ".";
+				
+				if (login.studentEmail.indexOf(atEmail) > -1 & login.studentEmail.indexOf(dot) > -1 &
+						login.studentPassword.length() >= 4) {				
+					try {
+						
+						//1. Create database connection
+						Connection myConn = DriverManager.getConnection(
+					            "jdbc:mysql://localhost:3306/alu_registration_database","root", "");
+						
+						//2. Create a statement
+						Statement mySt = myConn.createStatement();
+									
+						//3. Execute sql query
+//						String selectQuery = "select * from login_credentials_table where 'email' = \""
+//								+ login.studentEmail + "\" and 'password' = \"" + login.studentPassword + "\";";
+//						
+						String selectQuery = "select * from login_credentials_table;";
+						
+						ResultSet matchingData = mySt.executeQuery(selectQuery);
+						
+//						System.out.println(matchingData.getFetchSize());
+						int counter = 0;
+						while(matchingData.next()) {
+//							counter ++;
+//							System.out.println(counter);
+//							System.out.println(matchingData.getString("email"));
+							if (matchingData.getString("email").equals(login.studentEmail) &
+									matchingData.getString("password").equals(login.studentPassword)){
+//								System.out.println(counter);
+								counter ++;
+							}
+						}
+						
+						System.out.println("1:" + counter);
+						
+						if (counter >= 1) {
+							System.out.println("Logged in successfully");	// green color
+							login.result.setText("Logged in successfully");
+//							System.out.println(isLoggedIn());
+							
+						}
+						
+						if (login.isLoggedIn()) {
+							mainPane.setEnabledAt(3, true);
+							login.email.setText("");
+							login.password.setText(""); 
+							mainPane.setEnabledAt(5, true);	
+							mainPane.setEnabledAt(6, true);	
+							mainPane.setEnabledAt(7, true);	
+							displayStudentDetails();
+//							System.out.println("Hii");
+							
+							logoutBtn =  new JButton("Log out");
+							logoutBtn.setBounds(120, 420,200,30);  
+							logoutBtn.setEnabled(true);
+							login.loginPanel.add(logoutBtn);
+							
+							logoutBtn.addActionListener(new ActionListener(){
+								@Override
+								public void actionPerformed(ActionEvent e) {
+									mainPane.setEnabledAt(3, false);	
+									mainPane.setEnabledAt(4, false);
+									mainPane.setEnabledAt(5, false);	
+									mainPane.setEnabledAt(6, false);
+									mainPane.setEnabledAt(7, false); 
+									login.loginPanel.remove(logoutBtn);
+									login.result.setText("");
+								}
+							});
+							
+							Statement mySt1 = myConn.createStatement();
+							
+							//3. Execute sql query
+							String selectQuery1 = "select * from applicants_table";
+							
+							ResultSet registeredMatchingData = mySt1.executeQuery(selectQuery1);
+							
+							int counter2 = 0;
+							while(registeredMatchingData.next()) {
+								if (registeredMatchingData.getString("email").equals(login.studentEmail)) {
+									counter2 ++;
+								}
+							}
+							
+							System.out.println("2: "+counter2);
+							
+							if (counter2 >= 1) {
+								mainPane.setEnabledAt(4, true);
+							}
+						}
+						
+											
+					}
+					
+					catch(SQLException exception) {
+						if(exception.getErrorCode() == 0 ){
+							System.out.println("Database connection failed. Please check if your database is connected."); 
+						}
+						else {
+							exception.printStackTrace();
+						}
+					}
+				} 
+				else { 
+					if (login.studentPassword.length() < 4) {       // red color
+						login.result.setText("Password must be at least 4 characters");
+					} else {
+						login.result.setText("Invalid email.");
+					}
+				}
+				
+								
+				System.out.println(login.isLoggedIn());
+			}  
+		});
+		
+				
+		
+		register.registerBtn.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				register.studentName = register.name.getText();
+				register.studentEmail = register.email.getText();
+				register.studentPhoneNumber = register.phoneNumber.getText();
+				register.countryofRes = register.countryOfResidence.getText();
+				register.studentNationality = register.nationality.getText();
+				if (register.rwandaRadioBtn.isSelected()) {
+					register.selectedCampus = "Rwanda";
+				} else if (register.mauritiusRadioBtn.isSelected()){
+					register.selectedCampus = "Mauritius";
+				} 
+				
+				if (register.janIntakeRadioBtn.isSelected()) {
+					register.selectedIntake = register.janIntakeRadioBtn.getText();
+				} else if (register.septIntakeRadioBtn.isSelected()){
+					register.selectedIntake = register.septIntakeRadioBtn.getText();
+				}
+				register.studentGrades = register.grades.getText();
+					
+				String atEmail = "@";
+				String dot = ".";
+								
+						        				
+				if (register.studentName.length() > 0 & (register.studentEmail.indexOf(atEmail) > -1 & 
+						register.studentEmail.indexOf(dot) > -1 )&
+						(String.valueOf(register.studentPhoneNumber).length() >= 10 |
+								String.valueOf(register.studentPhoneNumber).length() <= 20)
+						& register.countryofRes.length() > 0 & register.studentNationality.length() > 0 
+						& (register.rwandaRadioBtn.isSelected() | register.mauritiusRadioBtn.isSelected() ) 
+						&(register.janIntakeRadioBtn.isSelected() | register.septIntakeRadioBtn.isSelected())
+						& register.studentGrades.length() > 0 ) 
+				{ 
+					
+					LocalDate currentdate = LocalDate.now();
+			        int year= currentdate.getYear(); 
+					try { 
+						
+						if (Integer.parseInt(register.studentGrades) >= 18 & Integer.parseInt(register.studentGrades) <= 20 ) {
+							register.major = "Computer science";
+						} else if (Integer.parseInt(register.studentGrades) >= 15 & Integer.parseInt(register.studentGrades) <= 17 ) {
+							register.major = "Global challenges";
+						} else if (Integer.parseInt(register.studentGrades) >= 12 & Integer.parseInt(register.studentGrades) <= 14 ) {
+							register.major = "Business studies";
+						} else { 
+							register.major = "Unqualified";
+						}
+						
+						//1. Create database connection
+						Connection myConn = DriverManager.getConnection(
+					            "jdbc:mysql://localhost:3306/alu_registration_database","root", "");
+						
+						//2. Create a statement
+						Statement mySt = myConn.createStatement();
+						
+						ResultSet myRe = mySt.executeQuery("select * from applicants_table");
+						
+						int previousStNum = 0;
+						//4. Process the result
+						while(myRe.next()) {
+							
+							// getting the rows in the database
+							register.lastNumber = myRe.getString("studentRegistrationNumber");
+							System.out.println(register.lastNumber);
+							String[] splitStudentNbr = register.lastNumber.split("/");
+							int currentYear = Integer.parseInt(splitStudentNbr[0]);
+//							System.out.println(currentYear);
+							int currentNum = Integer.parseInt(splitStudentNbr[1]);
+							System.out.println("current: "+currentNum);
+							if (currentYear == year) {
+								if (currentNum >= previousStNum) {
+									previousStNum = currentNum; 
+									register.nextNumber = (currentNum + 1);
+//									System.out.println("must be: " + nextNumber);
+								}
+								else { 
+									continue;
+								}
+								
+//								
+							}
+						}
+//						System.out.println("one taken: " + nextNumber);
+						register.studentNumber = String.valueOf(year).concat("/" + String.valueOf(register.nextNumber));
+					 
+						if (register.major.equals("Unqualified")){
+							JOptionPane.showMessageDialog(register.registrationForm,
+									"You don't have enough grades to be qualified for admission.", "Message", 1);
+						}
+						else {
+							//3. Execute sql query
+							String insertQuery = "insert into applicants_table(studentRegistrationNumber, fullName,"
+									+ " email, phoneNumber, countryOfResidence, nationality, campus, intake, grades, major) values"
+									+ "(\"" + register.studentNumber + "\",\"" + register.studentName + "\",\"" + register.studentEmail + "\",\"" 
+									+ register.studentPhoneNumber + "\",\"" + register.countryofRes + "\",\""  + register.studentNationality +
+									 "\",\"" + register.selectedCampus +  "\",\"" + register.selectedIntake +  "\",\"" + 
+									Integer.parseInt(register.studentGrades) + "\",\"" + register.major +  "\");";
+							
+							mySt.executeUpdate(insertQuery);
+							displayStudentDetails();
+							
+							System.out.println("Inserted successfully");	// green color
+							
+							register.result.setText("Registered successfully");
+							
+							mainPane.setEnabledAt(4, true);
+						
+						}
+						
+//						if (register.major.equals("Unqualified")){
+//							JOptionPane.showMessageDialog(register.registrationForm,
+//									"You don't have enough grades to be qualified for admission.", "Message", 1);
+//						}
+											
+					}
+					
+					catch(SQLException exception ) { 
+						if(exception.getErrorCode() == 0 ){
+							System.out.println("Database connection failed. Please check if your database is connected."); 
+						}else if(exception.getErrorCode() == 1062 ){
+							register.result.setText("Already registered.");
+						}
+						else {
+							exception.printStackTrace();
+						}
+					}
+					
+					
+				} else { 
+					if (register.studentName.length() == 0) {       // red color
+						register.result.setText("Full name field is empty");
+					}
+					else if (register.studentEmail.indexOf(atEmail) <= 0 & register.studentEmail.indexOf(dot) <= 0) {
+						register.result.setText("Invalid email.");
+					} 
+					else if (String.valueOf(register.studentPhoneNumber).length() < 10 ) {       
+						register.result.setText("Verify the provided phone number");
+					}
+					else if (register.countryofRes.length() == 0) {       // red color
+						register.result.setText("Please specify your country of residence");
+					}
+					else if (register.studentNationality.length() == 0) {       // red color
+						register.result.setText("Please specify your nationality");
+					}
+					else if (!register.rwandaRadioBtn.isSelected() & !register.mauritiusRadioBtn.isSelected()) { // red color
+						register.result.setText("Please select a campus");
+					}
+					else if (!register.janIntakeRadioBtn.isSelected() & !register.septIntakeRadioBtn.isSelected()) { // red color
+						register.result.setText("Please select an intake");
+					}
+					else if (register.studentGrades.length() == 0 ) { // red color
+						register.result.setText("Please provide your grade");
+					}
+					else {
+						register.result.setText("verify your entries");
+					}
+				}
+			 }
+		  });
+		
+		
+		
+		frontPage.setSize(460,500);  
+		frontPage.setLayout(null);  		
+		frontPage.setVisible(true); 
+		
+				
+		registrationPortal.add(mainPane);
+		registrationPortal.setSize(495,730);
+		registrationPortal.setResizable(false);
+		registrationPortal.setLayout(null);  
+		registrationPortal.setVisible(true);
+		
+	}
+	
+	public void displayStudentDetails() {
+		try { 
+			//1. Create database connection
+			Connection myConn = DriverManager.getConnection(
+		            "jdbc:mysql://localhost:3306/alu_registration_database","root", "");
+			
+			//2. Create a statement
+			Statement mySt = myConn.createStatement();
+			
+			ResultSet myRe = mySt.executeQuery("select * from applicants_table;");
+			
+			int x = 0;
+			while(myRe.next()) {
+				if (myRe.getString("email").equals(login.studentEmail)) {
+					x ++;
+					admissionDetails.rollNumber.setText(myRe.getString("studentRegistrationNumber"));
+					admissionDetails.name.setText(myRe.getString("fullName"));
+					admissionDetails.email.setText(myRe.getString("email"));
+					admissionDetails.phoneNumber.setText(myRe.getString("phoneNumber"));
+					admissionDetails.countryOfResidence.setText(myRe.getString("countryOfResidence"));
+					admissionDetails.nationality.setText(myRe.getString("nationality"));
+					admissionDetails.campus.setText(myRe.getString("campus"));
+					admissionDetails.intake.setText(myRe.getString("intake"));
+					admissionDetails.grades.setText(myRe.getString("grades"));
+					admissionDetails.major.setText(myRe.getString("major"));
+					admissionDetails.admissionStatus.setText(myRe.getString("admissionStatus"));
+					
+				}
+			}
+			
+			System.out.println("x: " + x);
+			
+			
+		} catch(SQLException exception) {
+			if(exception.getErrorCode() == 0 ){
+				System.out.println("Database connection failed. Please check if your database is connected."); 
+			}
+			else {
+				exception.printStackTrace();
+			}
+		}
+		
+	}
+	
+	public static void main(String[] args) {
+		AluRegistrationApp regPortal = new AluRegistrationApp();
+	}
+}
+

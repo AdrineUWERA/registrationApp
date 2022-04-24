@@ -1,0 +1,53 @@
+// indicates the package under which the class is 
+package inheritanceScenario;
+
+// imports ArrayList class from java.util
+import java.util.ArrayList;
+
+// a class for computer science students that inherits the Student class
+public class ComputerScienceStudent extends Student{
+	
+	// 
+	protected String gitHubUserName;
+	ArrayList<String> languages = new ArrayList<String>();
+	ArrayList<String> projects = new ArrayList<String>();
+	
+	public ComputerScienceStudent(String name, String major, int year, String gitHubUserName) {
+		super(name, major, year);
+		this.setGitHubUserName(gitHubUserName);
+	}
+	
+	public void learnLanguage(String langauage) {
+		languages.add(langauage);
+	}
+	
+	public void buildProject(String title) {
+		projects.add(title);
+	}
+	
+	public void getAllLanguages() {
+		String allLang = studentName + " knows";
+		for (String lang: languages) {
+			allLang = allLang.concat(" " + lang + ",");
+		}
+		System.out.println(allLang);
+	}
+	
+	public void getAllProjects() {
+		String allProj = studentName + " built";
+		for (String proj: projects) {
+			allProj = allProj.concat(" " + proj + ",");
+		}
+		
+		System.out.println(allProj);
+	}
+
+	public String getGitHubUserName() {
+		return gitHubUserName;
+	}
+
+	public void setGitHubUserName(String gitHubUserName) {
+		this.gitHubUserName = gitHubUserName;
+	}
+
+}

@@ -1,0 +1,5 @@
+package interfaceScenario;
+
+public interface Shape {
+
+}

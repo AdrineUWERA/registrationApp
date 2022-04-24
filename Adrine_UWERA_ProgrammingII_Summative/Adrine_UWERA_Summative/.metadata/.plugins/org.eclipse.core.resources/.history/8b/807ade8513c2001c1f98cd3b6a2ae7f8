@@ -1,0 +1,148 @@
+package ALU;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.*;
+
+import javax.swing.*;
+
+public class LoginPage {
+//	JFrame loginPanel;
+	JPanel loginPanel;
+	JLabel emailLabel;
+	JTextField email;
+	JLabel passwordLabel;
+	JTextField password;
+	JLabel confirmEmailLabel;
+	JTextField confirmPassword;
+	JLabel result;
+	JButton loginBtn;
+	JButton logoutBtn;
+	String studentEmail;
+	String studentPassword;
+	
+	
+	
+	public LoginPage() {
+//		loginPanel = new JPanel();
+		loginPanel = new JPanel();
+//		loginPanel.setResizable(false);
+//		loginPanel.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+//		loginPanel = new JFrame();
+//		loginPanel.setResizable(false);
+//		loginPanel.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		emailLabel = new JLabel("Email: ");  
+		emailLabel.setBounds(50, 50, 350, 20); 
+		email = new JTextField();
+		email.setBounds(50, 80, 350, 30); 
+		
+		passwordLabel = new JLabel("Password: ");  
+	    passwordLabel.setBounds(50, 120, 300,30); 
+		password = new JTextField();
+		password.setBounds(50,160, 350, 30);  
+	    		
+		result = new JLabel("");  
+		result.setBounds(50,20, 300,30); 
+	   
+		loginPanel.add(result);
+	    loginPanel.add(email);
+	    loginPanel.add(password);
+	    loginPanel.add(emailLabel);
+	    loginPanel.add(passwordLabel);
+	    
+	    
+		loginBtn =  new JButton("Login");
+		loginBtn.setBounds(50,220,100,30);  
+		loginBtn.setEnabled(true);
+		loginPanel.add(loginBtn); 
+		
+//		logoutBtn =  new JButton("Login");
+//		logoutBtn.setBounds(120, 320,100,30);  
+//		logoutBtn.setEnabled(true);
+//		loginPanel.add(loginBtn);
+		
+//		loginBtn.addActionListener(new ActionListener() {
+//
+//			@Override
+//			public void actionPerformed(ActionEvent e) {
+//				String studentEmail = email.getText();
+//				String studentPassword = password.getText();
+//				String atEmail = "@";
+//				String dot = ".";
+//				
+//				if (studentEmail.indexOf(atEmail) > -1 & studentEmail.indexOf(dot) > -1 &
+//						studentPassword.length() >= 4) {				
+//					try {
+//						
+//						//1. Create database connection
+//						Connection myConn = DriverManager.getConnection(
+//					            "jdbc:mysql://localhost:3306/alu_registration_database","root", "");
+//						
+//						//2. Create a statement
+//						Statement mySt = myConn.createStatement();
+//									
+//						//3. Execute sql query
+//						String selectQuery = "select* from login_credentials_table where 'email' = "
+//								+ "(\"" + studentEmail + "\" and 'password = ' \"" + studentPassword + "\");";
+//						
+//						ResultSet matchingData = mySt.executeQuery(selectQuery);
+//						
+//
+//						if (matchingData.getFetchSize() <= 1) {
+//							System.out.println("Logged in successfully");	// green color
+//							result.setText("Logged in successfully");
+////							System.out.println(isLoggedIn());
+//							
+//							
+//						}
+//											
+//					}
+//					
+//					catch(SQLException exception) {
+//						if(exception.getErrorCode() == 0 ){
+//							System.out.println("Database connection failed. Please check if your database is connected."); 
+//						}
+//						exception.printStackTrace();
+//					}
+//				} 
+//				else { 
+//					if (studentPassword.length() < 4) {       // red color
+//						result.setText("Password must be at least 4 characters");
+//					} else {
+//						result.setText("Invalid email.");
+//					}
+//				}
+//				
+//			}
+//			
+//		});
+		
+		loginPanel.setSize(460,320);  
+		loginPanel.setLayout(null);  		
+		loginPanel.setVisible(true); 
+	}
+	
+	public boolean isLoggedIn() {
+		boolean isOkay = false;
+		if (result.getText() == "Logged in successfully") {
+			isOkay = true;
+		} 
+		return isOkay;
+	}
+	
+	public static void main(String[] args) {
+		LoginPage L = new LoginPage();
+	}
+	
+}
+
+//if (matchingData.next()) {
+//UserHome ah = new UserHome(userName);
+//ah.setTitle("Welcome");
+//ah.setVisible(true);
+//JOptionPane.showMessageDialog(btnNewButton, "You have successfully logged in");
+//} else {
+//JOptionPane.showMessageDialog(btnNewButton, "Wrong Username & Password");
+//}

@@ -1,0 +1,17 @@
+package inheritanceScenario;
+
+public class Parent1 {
+	String eyeColor = "black";
+	String bloodGroup = "B";
+	String bodyType = "Skinny";
+	String gender = "male";
+	
+	public void walks() {
+		System.out.println("Walks faster faster");
+	}
+	
+	public void writes() {
+		System.out.println("Has a nice handwriting");
+	}
+}
+
